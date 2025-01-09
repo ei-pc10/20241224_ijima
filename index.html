@@ -29,22 +29,16 @@
       <!-- カメラの設定 -->
       <a-camera gps-camera rotation-sync></a-camera>
 
-      <!-- 環境光 -->
-      <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
+ <a-entity light="color: #BBB; type: ambient; intensity: 1.5" data-aframe-default-light="" aframe-injected=""></a-entity>
+     <a-entity light="intensity: 1.2; castShadow: true" position="-0.5 1 1" data-aframe-default-light="" aframe-injected=""></a-entity>                
 
-      <!-- ディレクショナルライト -->
-      <a-light 
-        type="directional" 
-        position="1 2 0.5" 
-        intensity="0.8" 
-        target="#model"></a-light>
 
       <!-- 3Dモデルを指定された位置に配置。カメラの向きに影響されない -->
       <a-entity 
         id="model"
         gps-entity-place="latitude: 37.95623964531757; longitude: 139.3371717973987" 
         gltf-model="https://raw.githubusercontent.com/ei-pc10/modelmodel/main/%E7%85%89%E7%93%A6%E5%B1%8B.glb" 
-        scale="4 4 4" 
+        scale="8 8 8" 
         rotation="0 0 0"
         look-at="[camera]">
       </a-entity>
