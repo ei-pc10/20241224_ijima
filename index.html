@@ -15,7 +15,26 @@
         tick: function () {
           // ここではカメラの回転情報を取得しますが、モデルには影響を与えません。
           const cameraRotation = this.el.sceneEl.camera.el.getAttribute('rotation');
-          // モデルの回転を変更せずにそのままにしておきます
+        }
+      });
+
+      // ポリゴンオフセット用コンポーネントを定義
+      AFRAME.registerComponent('polygon-offset', {
+        schema: {
+          factor: { type: 'number', default: 1 }, // オフセット係数
+          units: { type: 'number', default: 1 },  // オフセット単位
+        },
+        init: function () {
+          const mesh = this.el.getObject3D('mesh');
+          if (mesh) {
+            mesh.traverse(node => {
+              if (node.isMesh) {
+                node.material.polygonOffset = true;
+                node.material.polygonOffsetFactor = this.data.factor;
+                node.material.polygonOffsetUnits = this.data.units;
+              }
+            });
+          }
         }
       });
     </script>
@@ -23,6 +42,7 @@
 <body style="margin: 0; overflow: hidden;">
     <a-scene 
       antialias="true" 
+      renderer="logarithmicDepthBuffer: true; alpha: true; precision: highp;" 
       vr-mode-ui="enabled: false" 
       embedded 
       arjs="sourceType: webcam; debugUIEnabled: false;">
@@ -38,16 +58,18 @@
         type="directional" 
         position="1 2 0.5" 
         intensity="0.8" 
-        target="#model"></a-light>
+        target="#model" 
+        castShadow="true"></a-light>
 
-      <!-- 3Dモデルを指定された位置に配置。カメラの向きに影響されない -->
+      <!-- 3Dモデルにポリゴンオフセットを適用 -->
       <a-entity 
         id="model"
         gps-entity-place="latitude: 37.95623964531757; longitude: 139.3371717973987" 
         gltf-model="https://raw.githubusercontent.com/ei-pc10/modelmodel/main/%E7%85%89%E7%93%A6%E5%B1%8B.glb" 
         scale="8 8 8" 
         rotation="0 0 0"
-        look-at="[camera]">
+        look-at="[camera]"
+        polygon-offset="factor: 1; units: 1">
       </a-entity>
 
     </a-scene>
